@@ -3,7 +3,8 @@ import {
   useEffect,
   useContext,
   createContext,
-  useRef
+  useRef,
+  useReducer
 } from 'react';
 import './App.css';
 
@@ -16,6 +17,23 @@ function App() {
   // useRef hook 
   const myBtn = useRef(null)
   const clickIt = () => myBtn.current.click()
+  
+  const reducer = (state, action) => {
+
+    switch(action.type) {
+      case 'increment':
+        return state + 1;
+        case 'decrement':
+          return state - 1;
+          default:
+            throw new Error()
+    }
+  }
+
+  // useReducer
+  const [state, dispatch] = useReducer(reducer, 0);
+
+
 
   // useEffect takes the place of the 3 life cycle methods in class components(componentDidMount, componentDidUpdate, componentWillUnmount)
   useEffect(() => {
@@ -63,6 +81,10 @@ function App() {
       ))}</div>
 
       <button ref={myBtn}>click me</button>
+
+      Count: {state}
+      <button onClick={() => dispatch({type: 'increment'})}>+</button>
+      <button onClick={() => dispatch({type: 'decrement'})}>-</button>
     </div>
   );
 }
